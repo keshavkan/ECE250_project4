@@ -130,6 +130,7 @@ occupied( new bin_state_t[array_size] ) {
 template <typename Type>
 Quadratic_hash_table<Type>::~Quadratic_hash_table() {
 
+	//delete arrays
 	delete [] array;
 	delete [] occupied;
 }
@@ -187,7 +188,8 @@ double Quadratic_hash_table<Type>::load_factor() const {
 
 /*
  * Accessor: bool member(Type const &obj)
- * 			 Quadratically probes array for obj
+ * 			 Searches the hash table for obj by
+ *           quadratically probing
  *
  * Returns: true if the hash table contains the obj
  */
@@ -196,15 +198,15 @@ bool Quadratic_hash_table<Type>::member(Type const &obj) const {
 	// initial bin
 	int bin = hash(obj);
 
-	// retrun if matched
-	if (array[bin] == obj){
+	// retrun if matched and occupied
+	if (occupied[bin] == OCCUPIED && array[bin] == obj){
 		return true;
 	}
 
 	// quadratically probe array for obj
 	for (int i = 0; i < capacity(); i++) {
 		bin = (bin + i) % capacity();
-		if (array[bin] == obj){
+		if (occupied[bin] == OCCUPIED && array[bin] == obj){
 			return true;
 		}
 	}
@@ -240,7 +242,7 @@ Type Quadratic_hash_table<Type>::bin(int n) const {
 		return array[n];
 	} else {
 		//TODO
-        return Type();
+        return array[n];
 	}
 }
 
@@ -278,6 +280,7 @@ void Quadratic_hash_table<Type>::insert(Type const &obj) {
 			//insert and set flag
 			array[h] = obj;
 			occupied[h] = OCCUPIED;
+            count++;
 			return;
 
 		case OCCUPIED:
@@ -288,7 +291,8 @@ void Quadratic_hash_table<Type>::insert(Type const &obj) {
 					//insertion
 					array[h] = obj;
 					occupied[h] = OCCUPIED;
-					//update erase count
+					//update counters
+                    count++;
 					if (occupied[h] == ERASED) erased--;
 					return;
 				}
@@ -301,6 +305,8 @@ void Quadratic_hash_table<Type>::insert(Type const &obj) {
 			//insert and set flag
 			array[h] = obj;
 			occupied[h] = OCCUPIED;
+            //update counters
+            count++;
 			erased--;
 			return;
 	}
@@ -319,9 +325,10 @@ bool Quadratic_hash_table<Type>::erase(Type const &obj) {
 
 	//check initial bin
 	if (array[bin] == obj){
-		//erase and increment erased
+		//erase and update counters
 		occupied[bin] = ERASED;
 		erased++;
+        count--;
 		return true;
 	}
 
@@ -329,9 +336,10 @@ bool Quadratic_hash_table<Type>::erase(Type const &obj) {
 	for (int i = 0; i < capacity(); i++) {
 		bin = (bin + i) % capacity();
 		if (array[bin] == obj){
-			//erase and increment erased
+			//erase and update counters
 			occupied[bin] = ERASED;
 			erased++;
+            count--;
 			return true;
 		}
 	}
