@@ -29,6 +29,9 @@
 		6BCBBF6F1AC0E8D0003A0D57 /* int.out.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = int.out.txt; sourceTree = "<group>"; };
 		6BCBBF701AC0E8D0003A0D57 /* Quadratic_hash_table.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Quadratic_hash_table.h; sourceTree = "<group>"; };
 		6BCBBF711AC0E8D0003A0D57 /* Quadratic_hash_table_driver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Quadratic_hash_table_driver.cpp; sourceTree = "<group>"; };
+		6BCBBF731AC0EA64003A0D57 /* ece250.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ece250.h; sourceTree = "<group>"; };
+		6BCBBF741AC0EA64003A0D57 /* exception.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = exception.h; sourceTree = "<group>"; };
+		6BCBBF751AC0EA64003A0D57 /* Tester.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tester.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,6 +64,9 @@
 		6BCBBF641AC0E85A003A0D57 /* Project4 */ = {
 			isa = PBXGroup;
 			children = (
+				6BCBBF731AC0EA64003A0D57 /* ece250.h */,
+				6BCBBF741AC0EA64003A0D57 /* exception.h */,
+				6BCBBF751AC0EA64003A0D57 /* Tester.h */,
 				6BCBBF6D1AC0E8D0003A0D57 /* int.in.txt */,
 				6BCBBF6E1AC0E8D0003A0D57 /* Quadratic_hash_table_tester.h */,
 				6BCBBF6F1AC0E8D0003A0D57 /* int.out.txt */,
