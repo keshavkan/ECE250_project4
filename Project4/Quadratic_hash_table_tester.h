@@ -15,7 +15,7 @@
 #define nullptr 0
 #endif
 
-#include "Exception.h"
+#include "exception.h"
 #include "Tester.h"
 #include "Quadratic_hash_table.h"
 
