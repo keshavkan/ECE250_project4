@@ -299,10 +299,10 @@ void Quadratic_hash_table<Type>::insert(Type const &obj) {
 				if (occupied[h] != OCCUPIED) {
 					//insertion
 					array[h] = obj;
-					occupied[h] = OCCUPIED;
 					//update counters
                     count++;
 					if (occupied[h] == ERASED) erased--;
+                    occupied[h] = OCCUPIED;
 					return;
 				}
 			}
@@ -330,7 +330,7 @@ bool Quadratic_hash_table<Type>::erase(Type const &obj) {
 	int bin = hash(obj);
 
 	//check initial bin
-	if (array[bin] == obj){
+	if (array[bin] == obj && occupied[bin] == OCCUPIED){
 		//erase and update counters
 		occupied[bin] = ERASED;
 		erased++;
@@ -341,7 +341,7 @@ bool Quadratic_hash_table<Type>::erase(Type const &obj) {
 	//quadratically probe array for obj
 	for (int i = 0; i < capacity(); i++) {
 		bin = (bin + i) % capacity();
-		if (array[bin] == obj){
+		if (array[bin] == obj && occupied[bin] == OCCUPIED){
 			//erase and update counters
 			occupied[bin] = ERASED;
 			erased++;
@@ -371,6 +371,10 @@ void Quadratic_hash_table<Type>::clear() {
 	for (int i = 0; i < capacity(); i++) {
         occupied[i] = UNOCCUPIED;
 	}
+    
+    //reset counters
+    erased = 0;
+    count = 0;
 }
 
 template <typename T>
