@@ -90,8 +90,9 @@ class Quadratic_hash_table {
  *********************************************************************/
 
 /*
- * Constructor:
+ * Constructor: Quadratic_hash_table(int n)
  *
+ * Creates a new hash table instance with capacity of 2^n
  */
 template <typename Type>
 Quadratic_hash_table<Type>::Quadratic_hash_table(int n):
@@ -107,8 +108,9 @@ occupied( new bin_state_t[array_size] ) {
 }
 
 /*
- * Constructor:
+ * Constructor: Quadratic_hash_table()
  *
+ * Creates a new hash table instance with capacity of 2^5
  */
 template <typename Type>
 Quadratic_hash_table<Type>::Quadratic_hash_table():
@@ -198,7 +200,7 @@ bool Quadratic_hash_table<Type>::member(Type const &obj) const {
 	// initial bin
 	int bin = hash(obj);
 
-	// retrun if matched and occupied
+	// return if matched and occupied
 	if (occupied[bin] == OCCUPIED && array[bin] == obj){
 		return true;
 	}
@@ -238,12 +240,7 @@ int Quadratic_hash_table<Type>::hash(Type const &obj) const {
  */
 template<typename Type>
 Type Quadratic_hash_table<Type>::bin(int n) const {
-	if (occupied[n] == OCCUPIED) {
-		return array[n];
-	} else {
-		//TODO
-        return array[n];
-	}
+    return array[n];
 }
 
 /*
@@ -271,6 +268,12 @@ void Quadratic_hash_table<Type>::print() const {
  */
 template<typename Type>
 void Quadratic_hash_table<Type>::insert(Type const &obj) {
+    //throw overflow first | check count
+    //check for duplicates
+    if (size() == capacity()) {
+        throw overflow();
+    }
+    
 	// hash value
 	int h = hash(obj);
 
@@ -287,7 +290,13 @@ void Quadratic_hash_table<Type>::insert(Type const &obj) {
 			//quadratically probe for an empty bin
 			for (int i = 0; i < capacity(); i++) {
 				h = (h + i) % capacity();
-				if (occupied[h] == UNOCCUPIED || occupied[h] == ERASED) {
+                
+                //break if duplicates found
+                if (array[h] == obj && occupied[h] == OCCUPIED) {
+                    return;
+                }
+                //if bin is unoccupied
+				if (occupied[h] != OCCUPIED) {
 					//insertion
 					array[h] = obj;
 					occupied[h] = OCCUPIED;
@@ -297,9 +306,6 @@ void Quadratic_hash_table<Type>::insert(Type const &obj) {
 					return;
 				}
 			}
-
-			//if array is full
-			throw overflow();
 
 		case ERASED:
 			//insert and set flag
@@ -358,12 +364,12 @@ bool Quadratic_hash_table<Type>::erase(Type const &obj) {
 template<typename Type>
 void Quadratic_hash_table<Type>::clear() {
 	
-	//erase all occupied bins
+    //create new array
+    delete [] array;
+    array = new Type[array_size];
+    //set bin status to unoccupied
 	for (int i = 0; i < capacity(); i++) {
-		if (occupied[i] == OCCUPIED) {
-			occupied[i] = ERASED;
-			erased++;
-		}
+        occupied[i] = UNOCCUPIED;
 	}
 }
 
